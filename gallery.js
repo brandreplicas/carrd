@@ -6,7 +6,7 @@
     var vdos = /(mp4|3gp|ogg|avi|mov|wmv|flv|webm|mkv)/;
     var poto = /(png|jpg|jpeg|gif|webp|bmp|tiff|svg)/;
     var pos = -1;
-    var mail_to='mailto:brandreplicastore@gmail.com?cc=tanzil.memon03@gmail.com&subject=Catalog%20Product%20Enquiry&body=';
+    var mail_to='mailto:brandreplicastore@gmail.com?subject=Catalog%20Product%20Enquiry&body=';
     var listEl = null;
     var lastEl = null;
     var cat_item = null;
