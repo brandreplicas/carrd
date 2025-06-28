@@ -165,6 +165,8 @@
     }
     window.push_medias = push_medias;
     window.push_categories = push_categories;
+    window.closeFullscreen = closeFullscreen;
+    window.openFullscreen = openFullscreen;
     document.addEventListener("scroll", scroller, false);
     document.addEventListener("DOMContentLoaded", page_init, false);   
     document.addEventListener("fullscreenchange", () => {
