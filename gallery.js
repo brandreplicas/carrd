@@ -53,10 +53,10 @@
         data.forEach(src => {
             var media = '';
              if(poto.test(src)){
-                media = ['<img src="',src,'" class="gallery-image"/>'].join('');
+                media = ['<img src="',src,'" onclick="openFullscreen(this)" class="gallery-image"/>'].join('');
             } else if(vdos.test(src)){
                 media = [
-                '<video class="gallery-image" autoplay="" muted="" playsinline="" loop="">',
+                '<video class="gallery-image" onclick="openFullscreen(this)" autoplay="" muted="" playsinline="" loop="">',
                     '<source src="',src,'" />',
                 '</video>'
                 ].join('');
@@ -167,4 +167,30 @@
     window.push_categories = push_categories;
     document.addEventListener("scroll", scroller, false);
     document.addEventListener("DOMContentLoaded", page_init, false);   
+    document.addEventListener("fullscreenchange", () => {
+        if (!document.fullscreenElement) {
+            console.log("Exited fullscreen");
+        }
+    });
+
+    function closeFullscreen() {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+    }
+
+    function openFullscreen(elem) {
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { // Safari
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { // IE11
+            elem.msRequestFullscreen();
+        }
+    }
+
 })(window, document);
