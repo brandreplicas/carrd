@@ -417,13 +417,18 @@ img,video {
         }
       }
 			
-			.profile-bio.short, .title-short{
-		    border: 1px ridge #ccc;
-		    padding: 4px 10px;
-		    border-radius: 0 10px;
-		    border-bottom-style: outset;
-		    box-shadow: 4px 3px 4px 0px;
-			}
-			.left-0{
-				left:0px;
-			}
+.profile-bio.short, .title-short{
+border: 1px ridge #ccc;
+padding: 4px 10px;
+border-radius: 0 10px;
+border-bottom-style: outset;
+box-shadow: 4px 3px 4px 0px;
+}
+.left-0{
+    left:0px;
+}
+
+.foot{text-align:center;}
+.icon{display:inline-block;}
+.icon.chat{margin-right:5px;}
+.icon.email{margin-left:5px;}
