@@ -52,21 +52,15 @@
         pos += data.length;
         data.forEach(src => {
             var media = '';
-             if(poto.test(src)){
-                media = ['<img src="',src,'" class="gallery-image"/>'].join('');
-            } else if(vdos.test(src)){
-                media = [
-                '<video class="gallery-image" autoplay="" muted="" playsinline="" loop="">',
-                    '<source src="',src,'" />',
-                '</video>'
-                ].join('');
+             if(!poto.test(src)){
+                return;
             }
             var link = encodeURIComponent(src);
             var wa_link = wsl + link;
             var email = mail_to + msg + link;
             listEl.innerHTML += [
                 '<div class="gallery-item" tabindex="0">',
-                    media,
+                    '<div data-src="',src,'" class="image"></div>',
                     '<div class="foot">',
                         '<a class="icon chat" target="_blank" href="',wa_link,'"><img src="chat.svg" width="30"/></a>',
                         '<a class="icon email" target="_blank" href="',email,'"><img src="email.svg" width="30"/></a>',
@@ -74,6 +68,7 @@
                     '</div>',
                 '</div>'
             ].join('');
+            lazy_img(src);
         });
         scroller();
     };
@@ -126,11 +121,11 @@
 
     function on_category_changed(e){
         e.preventDefault();
-				cat_item = {'val':this.getAttribute('data-val'),'txt':this.getAttribute('data-txt')};
+        cat_item = {'val':this.getAttribute('data-val'),'txt':this.getAttribute('data-txt')};
         pos = 0;
-				cath.textContent = cat_item.txt;
+        cath.textContent = cat_item.txt;
         listEl.innerHTML = '';
-				catbar.classList.remove('left-0');
+        catbar.classList.remove('left-0');
         noteEl.classList.remove('d-none');
         lastEl.classList.remove('d-none');
         resEl.classList.add('d-none');
@@ -163,6 +158,14 @@
             return false;
         });
         loadNewScript(catUrl);
+    }
+
+    function lazy_img(src){
+        var img = new Image();
+        img.onload = function(){
+            document.querySelector('div.image[data-src="'+src+'"]').style.backgroundImage = `url('$src')`;
+        }
+        img.src = src;
     }
     window.push_medias = push_medias;
     window.push_categories = push_categories;
