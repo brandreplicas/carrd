@@ -67,9 +67,9 @@
             listEl.innerHTML += [
                 '<div class="gallery-item" tabindex="0">',
                     media,
-                    '<div class="gallery-item-info">',
-                        '<a class="d-link" target="_blank" href="',wa_link,'">WhatsApp</a>',
-                        '<a class="d-link" target="_blank" href="',email,'">Email</a>',
+                    '<div style="text-align:center;">',
+                        '<a class="d-link" target="_blank" href="',wa_link,'"><img src="chat.svg" width="30"/></a>',
+                        '<a class="d-link" target="_blank" href="',email,'"><img src="email.svg" width="30"/></a>',
                     '</div>',
                 '</div>'
             ].join('');
