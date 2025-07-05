@@ -432,9 +432,3 @@ box-shadow: 4px 3px 4px 0px;
 .icon{display:inline-block;}
 .icon.eye{margin-left:5px;}
 .icon.email{margin-left:5px;}
-.image{
-    background-position: center;
-    background:url('fashluxee-logo-transformed.png');
-    background-repeat: no-repeat;
-    background-size: contain;
-}

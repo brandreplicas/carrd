@@ -60,7 +60,7 @@
             var email = mail_to + msg + link;
             listEl.innerHTML += [
                 '<div class="gallery-item" tabindex="0">',
-                    '<div data-src="',src,'" class="image"></div>',
+                    '<img src="fashluxee-logo-transformed.png" data-src="',src,'" class="gallery-image"/>',
                     '<div class="foot">',
                         '<a class="icon chat" target="_blank" href="',wa_link,'"><img src="chat.svg" width="30"/></a>',
                         '<a class="icon email" target="_blank" href="',email,'"><img src="email.svg" width="30"/></a>',
@@ -163,7 +163,7 @@
     function lazy_img(src){
         var img = new Image();
         img.onload = function(){
-            document.querySelector('div.image[data-src="'+src+'"]').style.backgroundImage = "url('"+src+"')";
+            document.querySelector('img.gallery-image[data-src="'+src+'"]').src = src;
         }
         img.src = src;
     }
