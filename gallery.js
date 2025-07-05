@@ -163,7 +163,7 @@
     function lazy_img(src){
         var img = new Image();
         img.onload = function(){
-            document.querySelector('div.image[data-src="'+src+'"]').style.backgroundImage = `url('$src')`;
+            document.querySelector('div.image[data-src="'+src+'"]').style.backgroundImage = "url('"+src+"')";
         }
         img.src = src;
     }
