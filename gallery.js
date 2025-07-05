@@ -106,7 +106,7 @@
     }
 
     function loadMore(){
-        if(moreLocked || !cath){
+        if(moreLocked || !cath || !cat_item){
             return;
         }
         moreLocked = true;
