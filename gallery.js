@@ -64,7 +64,6 @@
                     '<div class="foot">',
                         '<a class="icon chat" target="_blank" href="',wa_link,'"><img src="chat.svg" width="30"/></a>',
                         '<a class="icon email" target="_blank" href="',email,'"><img src="email.svg" width="30"/></a>',
-                        '<a class="icon eye" target="_blank" href="',src,'"><img src="eye.svg" width="30"/></a>',
                     '</div>',
                 '</div>'
             ].join('');
