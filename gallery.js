@@ -55,6 +55,7 @@
              if(!poto.test(src)){
                 return;
             }
+            var file = src.split('/').pop();
             var link = encodeURIComponent(src);
             var wa_link = wsl + link;
             var email = mail_to + msg + link;
@@ -64,6 +65,7 @@
                     '<div class="foot">',
                         '<a class="icon chat" target="_blank" href="',wa_link,'"><img src="chat.svg" width="30"/></a>',
                         '<a class="icon email" target="_blank" href="',email,'"><img src="email.svg" width="30"/></a>',
+                        '<a class="icon eye" target="_blank" download="',file,'" href="',src,'"><img src="download.svg" width="30"/></a>',
                     '</div>',
                 '</div>'
             ].join('');
