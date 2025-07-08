@@ -6,11 +6,6 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
 <url>
-  <loc>https://brandreplicas.github.io/carrd/</loc>
-  <lastmod>2025-07-05T01:03:15+00:00</lastmod>
-  <priority>1.00</priority>
-</url>
-<url>
   <loc>https://brandreplicas.github.io/carrd/index.html</loc>
   <lastmod>2025-07-05T01:03:15+00:00</lastmod>
   <priority>0.80</priority>
