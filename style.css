@@ -127,7 +127,6 @@ img,video {
 
 .gallery-item {
     position: relative;
-    flex: 1 0 22rem;
     margin: 1rem;
     color: #fff;
 }
@@ -269,7 +268,7 @@ img,video {
 
     .gallery {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
         grid-gap: 2rem;
     }
 
