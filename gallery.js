@@ -162,11 +162,19 @@
     }
 
     function lazy_img(src){
-        var img = new Image();
-        img.onload = function(){
-            document.querySelector('img.gallery-image[data-src="'+src+'"]').src = src;
-        }
-        img.src = src;
+        var obj = new Image();
+        var img = document.querySelector('img.gallery-image[data-src="'+src+'"]');
+        obj.onload = function(){
+            img.classList.add('fade-out');
+            img.addEventListener('transitionend', function handler() {
+                img.removeEventListener('transitionend', handler);
+                img.src = src;
+                img.onload = () => {
+                    img.classList.remove('fade-out');
+                };
+            });
+        };
+        obj.src = src;
     }
     window.push_medias = push_medias;
     window.push_categories = push_categories;
