@@ -163,11 +163,13 @@
 
     function lazy_img(src){
         var obj = new Image();
-        var img = document.querySelector('img.gallery-image[data-src="'+src+'"]');
-        img.classList.add('fade-out');
         obj.onload = function(){
-            img.src = src;
-            img.classList.remove('fade-out');
+            var img = document.querySelector('img.gallery-image[data-src="'+src+'"]');
+            img.classList.add('fade-out');
+            setTimeout(function(){
+                img.src = src;
+                img.classList.remove('fade-out');
+            },700);
         };
         obj.src = src;
     }
