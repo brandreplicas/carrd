@@ -164,12 +164,10 @@
     function lazy_img(src){
         var obj = new Image();
         var img = document.querySelector('img.gallery-image[data-src="'+src+'"]');
+        img.classList.add('fade-out');
         obj.onload = function(){
-            img.classList.add('fade-out');
             img.src = src;
-            img.onload = () => {
-                img.classList.remove('fade-out');
-            };
+            img.classList.remove('fade-out');
         };
         obj.src = src;
     }
