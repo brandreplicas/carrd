@@ -166,13 +166,10 @@
         var img = document.querySelector('img.gallery-image[data-src="'+src+'"]');
         obj.onload = function(){
             img.classList.add('fade-out');
-            img.addEventListener('transitionend', function handler() {
-                img.removeEventListener('transitionend', handler);
-                img.src = src;
-                img.onload = () => {
-                    img.classList.remove('fade-out');
-                };
-            });
+            img.src = src;
+            img.onload = () => {
+                img.classList.remove('fade-out');
+            };
         };
         obj.src = src;
     }
