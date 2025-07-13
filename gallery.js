@@ -162,16 +162,11 @@
     }
 
     function lazy_img(src){
-        var obj = new Image();
-        obj.onload = function(){
-            var img = document.querySelector('img.gallery-image[data-src="'+src+'"]');
-            img.classList.add('fade-out');
-            setTimeout(function(){
-                img.src = src;
-                img.classList.remove('fade-out');
-            },700);
-        };
-        obj.src = src;
+        var img = new Image();
+        img.onload = function(){
+            document.querySelector('img.gallery-image[data-src="'+src+'"]').src = src;
+        }
+        img.src = src;
     }
     window.push_medias = push_medias;
     window.push_categories = push_categories;
