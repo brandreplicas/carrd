@@ -439,3 +439,6 @@ box-shadow: 4px 3px 4px 0px;
 .fade-img.fade-out {
   opacity: 0;
 }
+
+.icon.left{float: left;}
+.icon.right{float: right;}

@@ -55,21 +55,50 @@
              if(!poto.test(src)){
                 return;
             }
-            var file = src.split('/').pop();
-            var link = encodeURIComponent(src);
-            var wa_link = wsl + link;
-            var email = mail_to + msg + link;
-            listEl.innerHTML += [
+            let file = src.split('/').pop();
+            let link = encodeURIComponent(src);
+            let wa_link = wsl + link;
+            let email = mail_to + msg + link;
+            let uuid = crypto.randomUUID().replaceAll('-','');
+            let url = src;
+            try{
+                let urls = JSON.parse(src);
+                src = urls;
+            }catch(e){
+                src = url;
+            }
+            let group = (Array.isArray(src) && src.length > 1);
+            if(group){
+                let show = 0;
+                put_group(src, uuid, show);
+                src = src[show];
+            }
+            let html = [
                 '<div class="gallery-item" tabindex="0">',
-                    '<img src="fashluxee-logo-transformed.png" data-src="',src,'" class="gallery-image"/>',
-                    '<div class="foot">',
+                    '<img id="',uuid,'" class="gallery-image"/>',
+                    '<div class="foot">'
+            ];
+            if(group){
+                html.push(...[
+                        '<a class="icon left" href="#!" onclick="left_img(\'',uuid,'\')" data-for="',uuid,'"><img src="left.svg" width="30"/></a>',
+                ]);
+            }
+            html.push(...[
                         '<a class="icon chat" target="_blank" href="',wa_link,'"><img src="chat.svg" width="30"/></a>',
                         '<a class="icon email" target="_blank" href="',email,'"><img src="email.svg" width="30"/></a>',
-                        '<a class="icon eye" target="_blank" download="',file,'" href="',src,'"><img src="download.svg" width="30"/></a>',
+                        '<a class="icon eye" target="_blank" download="',file,'" href="',src,'"><img src="download.svg" width="30"/></a>'
+            ]);
+            if(group){
+                html.push(...[
+                        '<a class="icon right" href="#!" onclick="right_img(\'',uuid,'\')" data-for="',uuid,'"><img src="right.svg" width="30"/></a>',
+                ]);
+            }
+            html.push(...[
                     '</div>',
                 '</div>'
-            ].join('');
-            lazy_img(src);
+            ]);
+            listEl.innerHTML += html.join('');
+            lazy_img(src, uuid);
         });
         scroller();
     };
@@ -161,15 +190,56 @@
         loadNewScript(catUrl);
     }
 
-    function lazy_img(src){
+    function lazy_img(src, id){
+        document.getElementById(id).src = 'fashluxee-logo-transformed.png';
         var img = new Image();
         img.onload = function(){
-            document.querySelector('img.gallery-image[data-src="'+src+'"]').src = src;
-        }
+            document.getElementById(id).src = src;
+        };
         img.src = src;
     }
+
+    var groups = {};
+    function put_group(urls, uuid, show){
+        groups[uuid] = {
+            'urls':urls,
+            'show':show
+        }
+    }
+
+    function left_img(uuid){
+        var group = groups[uuid];
+        if(!group) return;
+        var show = group.show;
+        if(0 === show) return;
+        show -= 1;
+        var urls = group.urls;
+        var src = urls[show];
+        if(!src) return;
+        group.show = show;
+        groups[uuid] = group;
+        lazy_img(src, uuid);
+    }
+
+    function right_img(uuid){
+        var group = groups[uuid];
+        if(!group) return;
+        var urls = group.urls;
+        var show = group.show;
+        var maxi = urls.length - 1;
+        if(maxi === show) return;
+        show += 1;
+        var src = urls[show];
+        if(!src) return;
+        group.show = show;
+        groups[uuid] = group;
+        lazy_img(src, uuid);
+    }
+
     window.push_medias = push_medias;
     window.push_categories = push_categories;
+    window.left_img = left_img;
+    window.right_img = right_img;
     document.addEventListener("scroll", scroller, false);
     document.addEventListener("DOMContentLoaded", page_init, false);
 })(window, document);
