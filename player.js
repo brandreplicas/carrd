@@ -38,7 +38,7 @@
       if(index < 0 || index >= playlist.length) return;
       currentIndex = index;
       localStorage.setItem("mp3_currentIndex", currentIndex);
-      audioPlayer.src = playlist[currentIndex];
+      audioPlayer.src = 'assets/audios.in/'+playlist[currentIndex];
       currentSongName.textContent = "Now playing: " + playlist[currentIndex];
       // Reset current time
       audioPlayer.currentTime = 0;
