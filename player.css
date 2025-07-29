@@ -1,0 +1,8 @@
+#player-controls {
+    margin-top: 1rem;
+}
+#player-controls button {
+    margin-right: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+}

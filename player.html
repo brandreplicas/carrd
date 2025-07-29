@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Super Lite JS MP3 Player</title>
+  <style>@import url('player.css'); </style>
+</head>
+<body>
+  <!-- Audio Element Container (hidden controls) -->
+  <audio id="audioPlayer"></audio>
+
+  <!-- Player UI -->
+  <div id="player-ui">
+    <p id="currentSongName">Now playing: (none)</p>
+    <div id="player-controls">
+      <button onclick="prevSong()">Prev</button>
+      <button onclick="togglePlayPause()">Play</button>
+      <button onclick="nextSong()">Next</button>
+      <button onclick="toggleLoop()">Toggle Loop</button>
+    </div>
+  </div>
+
+  <script src="player.js"></script>
+  </body>
+  </html>
