@@ -24,6 +24,7 @@
     const pauseLabel = "&#10074;&#10074;";
     var audioPlayer = null;
     var playPauseButton = null;
+    var volumeSlider = null;
 
     let currentIndex = localStorage.getItem("mp3_currentIndex") 
                          ? parseInt(localStorage.getItem("mp3_currentIndex"))
@@ -32,6 +33,10 @@
     let savedTime = localStorage.getItem("mp3_currentTime") 
                          ? parseFloat(localStorage.getItem("mp3_currentTime"))
                          : 0;
+    let savedVolume = localStorage.getItem("mp3_volume") 
+                         ? parseFloat(localStorage.getItem("mp3_volume"))
+                         : 0.5;
+                                              
 
 
     function loadSong(index) {
@@ -48,6 +53,9 @@
       audioPlayer = document.getElementById("audioPlayer");
       audioPlayer.loop = true;
       playPauseButton = document.querySelector("#player-controls button:nth-child(2)");
+      volumeSlider = document.getElementById("volumeControl");
+      audioPlayer.volume = savedVolume;
+
       loadSong(currentIndex);
       // Restore last time if available
       if(savedTime) {
@@ -68,6 +76,10 @@
       // When a song ends, move to the next song automatically
       audioPlayer.addEventListener("ended", () => {
         //nextSong();
+      });
+
+      volumeSlider.addEventListener("input", function() {
+        audioPlayer.volume = this.value;
       });
     });
 
@@ -121,4 +133,5 @@
       localStorage.setItem("mp3_currentIndex", currentIndex);
       localStorage.setItem("mp3_currentTime", audioPlayer.currentTime);
       localStorage.setItem("mp3_wasPlaying", !audioPlayer.paused);
+      localStorage.setItem("mp3_volume", audioPlayer.volume);
     });
