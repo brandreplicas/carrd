@@ -20,9 +20,10 @@
       "songs-19.mp3"
     ];
 
-    const audioPlayer = document.getElementById("audioPlayer");
-    const currentSongName = document.getElementById("currentSongName");
-    const playPauseButton = document.querySelector("#player-controls button:nth-child(2)");
+    const playLabel = "&#9654;";
+    const pauseLabel = "&#10074;&#10074;";
+    var audioPlayer = null;
+    var playPauseButton = null;
 
     let currentIndex = localStorage.getItem("mp3_currentIndex") 
                          ? parseInt(localStorage.getItem("mp3_currentIndex"))
@@ -46,6 +47,9 @@
 
     // Set up the audio element when the page loads
     window.addEventListener("load", () => {
+      audioPlayer = document.getElementById("audioPlayer");
+      audioPlayer.loop = true;
+      playPauseButton = document.querySelector("#player-controls button:nth-child(2)");
       loadSong(currentIndex);
       // Restore last time if available
       if(savedTime) {
@@ -53,9 +57,9 @@
       }
       if(wasPlaying) {
         audioPlayer.play();
-        playPauseButton.textContent = "Pause";
+        playPauseButton.textContent = pauseLabel;
       } else {
-        playPauseButton.textContent = "Play";
+        playPauseButton.textContent = playLabel;
       }
     });
 
@@ -73,11 +77,11 @@
     function togglePlayPause() {
       if(audioPlayer.paused) {
         audioPlayer.play();
-        playPauseButton.textContent = "Pause";
+        playPauseButton.textContent = pauseLabel;
         localStorage.setItem("mp3_wasPlaying", "true");
       } else {
         audioPlayer.pause();
-        playPauseButton.textContent = "Play";
+        playPauseButton.textContent = playLabel;
         localStorage.setItem("mp3_wasPlaying", "false");
       }
     }
@@ -92,37 +96,28 @@
         } else {
           // End of playlist, so pause playback.
           audioPlayer.pause();
-          playPauseButton.textContent = "Play";
+          playPauseButton.textContent = playLabel;
           return;
         }
       }
       loadSong(nextIndex);
       audioPlayer.play();
       localStorage.setItem("mp3_wasPlaying", "true");
-      playPauseButton.textContent = "Pause";
+      playPauseButton.textContent = pauseLabel;
     }
 
     // Play previous song
     function prevSong() {
       let prevIndex = currentIndex - 1;
       if(prevIndex < 0) {
-        prevIndex = 0; // or you might want to loop back to playlist.length-1
+        prevIndex = 0;
       }
       loadSong(prevIndex);
       audioPlayer.play();
       localStorage.setItem("mp3_wasPlaying", "true");
-      playPauseButton.textContent = "Pause";
+      playPauseButton.textContent = pauseLabel;
     }
 
-    // Toggle loop (note: audio.loop repeats just the current track)
-    // For a full playlist loop, you could implement a custom flag; here, we use audio.loop.
-    function toggleLoop() {
-      audioPlayer.loop = !audioPlayer.loop;
-      alert("Looping " + (audioPlayer.loop ? "enabled" : "disabled") +
-            ". (Note: Looping here repeats the current track. For looping the entire playlist, modify the logic in 'nextSong'.)");
-    }
-
-    // Optionally, save playback state before unload
     window.addEventListener("beforeunload", () => {
       localStorage.setItem("mp3_currentIndex", currentIndex);
       localStorage.setItem("mp3_currentTime", audioPlayer.currentTime);
