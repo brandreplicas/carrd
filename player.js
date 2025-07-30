@@ -62,9 +62,9 @@
         audioPlayer.currentTime = savedTime;
       }
       if(wasPlaying) {
-        audioPlayer.play();
         playPauseButton.innerHTML = pauseLabel;
       } else {
+        audioPlayer.pause();
         playPauseButton.innerHTML = playLabel;
       }
 
