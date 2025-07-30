@@ -40,8 +40,6 @@
       currentIndex = index;
       localStorage.setItem("mp3_currentIndex", currentIndex);
       audioPlayer.src = 'assets/audios.in/'+playlist[currentIndex];
-      currentSongName.textContent = "Now playing: " + playlist[currentIndex];
-      // Reset current time
       audioPlayer.currentTime = 0;
     }
 
@@ -57,31 +55,32 @@
       }
       if(wasPlaying) {
         audioPlayer.play();
-        playPauseButton.textContent = pauseLabel;
+        playPauseButton.innerHTML = pauseLabel;
       } else {
-        playPauseButton.textContent = playLabel;
+        playPauseButton.innerHTML = playLabel;
       }
+
+      // Update persistent current time regularly
+      audioPlayer.addEventListener("timeupdate", () => {
+        localStorage.setItem("mp3_currentTime", audioPlayer.currentTime);
+      });
+
+      // When a song ends, move to the next song automatically
+      audioPlayer.addEventListener("ended", () => {
+        //nextSong();
+      });
     });
 
-    // Update persistent current time regularly
-    audioPlayer.addEventListener("timeupdate", () => {
-      localStorage.setItem("mp3_currentTime", audioPlayer.currentTime);
-    });
-
-    // When a song ends, move to the next song automatically
-    audioPlayer.addEventListener("ended", () => {
-      nextSong();
-    });
 
     // Play or pause the audio
     function togglePlayPause() {
       if(audioPlayer.paused) {
         audioPlayer.play();
-        playPauseButton.textContent = pauseLabel;
+        playPauseButton.innerHTML = pauseLabel;
         localStorage.setItem("mp3_wasPlaying", "true");
       } else {
         audioPlayer.pause();
-        playPauseButton.textContent = playLabel;
+        playPauseButton.innerHTML = playLabel;
         localStorage.setItem("mp3_wasPlaying", "false");
       }
     }
@@ -96,14 +95,14 @@
         } else {
           // End of playlist, so pause playback.
           audioPlayer.pause();
-          playPauseButton.textContent = playLabel;
+          playPauseButton.innerHTML = playLabel;
           return;
         }
       }
       loadSong(nextIndex);
       audioPlayer.play();
       localStorage.setItem("mp3_wasPlaying", "true");
-      playPauseButton.textContent = pauseLabel;
+      playPauseButton.innerHTML = pauseLabel;
     }
 
     // Play previous song
@@ -115,7 +114,7 @@
       loadSong(prevIndex);
       audioPlayer.play();
       localStorage.setItem("mp3_wasPlaying", "true");
-      playPauseButton.textContent = pauseLabel;
+      playPauseButton.innerHTML = pauseLabel;
     }
 
     window.addEventListener("beforeunload", () => {
