@@ -26,18 +26,8 @@
     var playPauseButton = null;
     var volumeSlider = null;
 
-    let currentIndex = localStorage.getItem("mp3_currentIndex") 
-                         ? parseInt(localStorage.getItem("mp3_currentIndex"))
-                         : 0;
-    let wasPlaying = localStorage.getItem("mp3_wasPlaying") === "true";
-    let savedTime = localStorage.getItem("mp3_currentTime") 
-                         ? parseFloat(localStorage.getItem("mp3_currentTime"))
-                         : 0;
-    let savedVolume = localStorage.getItem("mp3_volume") 
-                         ? parseFloat(localStorage.getItem("mp3_volume"))
-                         : 0.5;
-                                              
-
+    let currentIndex = (parseInt(localStorage.getItem("mp3_currentIndex"))||0);
+    let savedVolume = (parseFloat(localStorage.getItem("mp3_volume"))||0.5);
 
     function loadSong(index) {
       // Ensure index is within bounds
@@ -51,31 +41,18 @@
     // Set up the audio element when the page loads
     window.addEventListener("load", () => {
       audioPlayer = document.getElementById("audioPlayer");
-      audioPlayer.loop = true;
       playPauseButton = document.querySelector("#player-controls button:nth-child(2)");
       volumeSlider = document.getElementById("volumeControl");
       audioPlayer.volume = savedVolume;
 
       loadSong(currentIndex);
-      // Restore last time if available
-      if(savedTime) {
-        audioPlayer.currentTime = savedTime;
-      }
-      if(wasPlaying) {
-        playPauseButton.innerHTML = pauseLabel;
-      } else {
-        audioPlayer.pause();
-        playPauseButton.innerHTML = playLabel;
-      }
-
-      // Update persistent current time regularly
-      audioPlayer.addEventListener("timeupdate", () => {
-        localStorage.setItem("mp3_currentTime", audioPlayer.currentTime);
-      });
+      audioPlayer.pause();
+      audioPlayer.loop = true;
+      playPauseButton.innerHTML = playLabel;
 
       // When a song ends, move to the next song automatically
       audioPlayer.addEventListener("ended", () => {
-        //nextSong();
+        nextSong();
       });
 
       volumeSlider.addEventListener("input", function() {
@@ -89,11 +66,9 @@
       if(audioPlayer.paused) {
         audioPlayer.play();
         playPauseButton.innerHTML = pauseLabel;
-        localStorage.setItem("mp3_wasPlaying", "true");
       } else {
         audioPlayer.pause();
         playPauseButton.innerHTML = playLabel;
-        localStorage.setItem("mp3_wasPlaying", "false");
       }
     }
 
@@ -113,7 +88,6 @@
       }
       loadSong(nextIndex);
       audioPlayer.play();
-      localStorage.setItem("mp3_wasPlaying", "true");
       playPauseButton.innerHTML = pauseLabel;
     }
 
@@ -125,13 +99,10 @@
       }
       loadSong(prevIndex);
       audioPlayer.play();
-      localStorage.setItem("mp3_wasPlaying", "true");
       playPauseButton.innerHTML = pauseLabel;
     }
 
     window.addEventListener("beforeunload", () => {
       localStorage.setItem("mp3_currentIndex", currentIndex);
-      localStorage.setItem("mp3_currentTime", audioPlayer.currentTime);
-      localStorage.setItem("mp3_wasPlaying", !audioPlayer.paused);
       localStorage.setItem("mp3_volume", audioPlayer.volume);
     });
