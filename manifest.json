@@ -2,7 +2,7 @@
     "name": "Fashluxee",
     "short_name": "Fashluxee",
     "theme_color": "#ffffff",
-    "background_color": "#fffff",
+    "background_color": "#ffffff",
     "display": "standalone",
     "scope": "/",
     "start_url": "https://brandreplicas.github.io/carrd/",
@@ -10,8 +10,8 @@
     "orientation": "any",
     "icons": [
         {
-            "src": "https://brandreplicas.github.io/carrd/fashluxee-logo-hd.png",
-            "sizes": "2081×1637"
+            "src": "https://brandreplicas.github.io/carrd/fashluxee-logo-white-bg-512x512.png",
+            "sizes": "512x512"
         }
     ]
 }
