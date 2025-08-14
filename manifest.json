@@ -1,0 +1,17 @@
+{
+    "name": "Fashluxee",
+    "short_name": "Fashluxee",
+    "theme_color": "#ffffff",
+    "background_color": "#fffff",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "https://brandreplicas.github.io/carrd/",
+    "description": "One stop shop for your Superfinest and Supertop quality replica products",
+    "orientation": "any",
+    "icons": [
+        {
+            "src": "https://brandreplicas.github.io/carrd/fashluxee-logo-hd.png",
+            "sizes": "2081×1637"
+        }
+    ]
+}
