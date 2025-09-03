@@ -167,7 +167,7 @@
     }
 
     function scroller() {
-        if (outViewport(lastEl)) return;
+        if (lastEl && outViewport(lastEl)) return;
         loadMore();
     }
 
