@@ -60,7 +60,7 @@
             let link = encodeURIComponent(src);
             let wa_link = wsl + link;
             let email = mail_to + msg + link;
-            let uuid = crypto.randomUUID().replaceAll("-", "");
+            let uuid = generateUUIDNoHyphens();
             let url = src;
             try {
                 let urls = JSON.parse(src);
@@ -84,39 +84,39 @@
             if (group) {
                 html.push(
                     ...[
-                        '<a class="icon left d-none" href="#!" onclick="left_img(\'',
+                        '<a aria-label="go left" class="icon left d-none" href="#!" onclick="left_img(\'',
                         uuid,
                         '\')" data-for="',
                         uuid,
                         '" data-direction="',go_left,
-                        '"><img src="left.svg" width="30"/></a>'
+                        '"><img alt="left" src="left.svg" width="30"/></a>'
                     ]
                 );
             }
             html.push(
                 ...[
-                    '<a class="icon chat" target="_blank" href="',
+                    '<a aria-label="chat" class="icon chat" target="_blank" href="',
                     wa_link,
-                    '"><img src="chat.svg" width="30"/></a>',
-                    '<a class="icon email" target="_blank" href="',
+                    '"><img alt="chat" src="chat.svg" width="30"/></a>',
+                    '<a aria-label="email" class="icon email" target="_blank" href="',
                     email,
-                    '"><img src="email.svg" width="30"/></a>',
-                    '<a class="icon eye" target="_blank" download="',
+                    '"><img alt="email" src="email.svg" width="30"/></a>',
+                    '<a aria-label="download" class="icon eye" target="_blank" download="',
                     file,
                     '" href="',
                     src,
-                    '"><img src="download.svg" width="30"/></a>'
+                    '"><img alt="download" src="download.svg" width="30"/></a>'
                 ]
             );
             if (group) {
                 html.push(
                     ...[
-                        '<a class="icon right" href="#!" onclick="right_img(\'',
+                        '<a aria-label="go right" class="icon right" href="#!" onclick="right_img(\'',
                         uuid,
                         '\')" data-for="',
                         uuid,
                         '" data-direction="',go_right,
-                        '"><img src="right.svg" width="30"/></a>'
+                        '"><img alt="right" src="right.svg" width="30"/></a>'
                     ]
                 );
             }
@@ -171,6 +171,25 @@
         loadMore();
     }
 
+    function generateUUIDNoHyphens() {
+        let array = new Uint8Array(16);
+        if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+            crypto.getRandomValues(array); // Use crypto if available
+        } else {
+            // Fallback for older browsers
+            for (let i = 0; i < 16; i++) {
+                array[i] = Math.floor(Math.random() * 256);
+            }
+        }
+
+        // Set UUID version (4) and variant bits
+        array[6] = (array[6] & 0x0f) | 0x40;
+        array[8] = (array[8] & 0x3f) | 0x80;
+
+        // Convert to hex string without hyphens
+        return Array.from(array, b => b.toString(16).padStart(2, '0')).join('');
+    }
+
     function on_category_changed(item) {
         cat_item = item;
         pos = 0;
@@ -211,10 +230,12 @@
     }
 
     function lazy_img(src, id) {
-        document.getElementById(id).src = "fashluxee-logo-transformed.png";
+        var el = document.getElementById(id);
+        el.src = "fashluxee-logo-transformed.png";
+        el.alt = src;
         var img = new Image();
         img.onload = function () {
-            document.getElementById(id).src = src;
+            el.src = src;
         };
         img.src = src;
     }
