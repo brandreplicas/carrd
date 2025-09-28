@@ -7,9 +7,9 @@ var preLoad = function(){
   return caches.open("offline").then(function(cache) {
     console.log("caching index and important routes");
     return cache.addAll([
-        "/carrd/404.html", "/carrd/app.html", "/carrd/contact.html", 
-        "/carrd/gallery.html", "/carrd/privacy-policy.html", "/carrd/offline.html",
-        "/carrd/terms-of-use.html",
+        "/404.html", "/app.html", "/contact.html", 
+        "/gallery.html", "/privacy-policy.html", "/offline.html",
+        "/terms-of-use.html",
         "https://luxury.pythonanywhere.com/media-list",
         "https://luxury.pythonanywhere.com/category-list"
     ]);
