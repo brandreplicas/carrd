@@ -5,12 +5,12 @@
   "background_color": "#ffffff",
   "display": "standalone",
   "scope": "/carrd/",
-  "start_url": "https://brandreplicas.github.io/carrd/",
+  "start_url": "https://fashluxee.com/",
   "description": "One stop shop for your Superfinest and Supertop quality replica products",
   "orientation": "any",
   "icons": [
     {
-      "src": "https://brandreplicas.github.io/carrd/fashluxee-logo-white-bg-512x512.png",
+      "src": "https://fashluxee.com/fashluxee-logo-white-bg-512x512.png",
       "sizes": "512x512"
     }
   ],
