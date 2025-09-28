@@ -34,6 +34,9 @@
         lazyJs.type = "text/javascript";
         lazyJs.className = sel;
         lazyJs.src = src + "?v=" + Date.now();
+        lazyJs.onerror = function(){
+            location.reload();
+        };
         document.body.appendChild(lazyJs);
     }
 
@@ -139,6 +142,7 @@
             a.className = "d-link";
             a.href = "#";
             a.textContent = item.text;
+            a.ariaLabel = item.text;
             a.onclick = function (e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -230,12 +234,10 @@
     }
 
     function lazy_img(src, id) {
-        var el = document.getElementById(id);
-        el.src = "fashluxee-logo-transformed.png";
-        el.alt = src;
+        document.getElementById(id).src = "fashluxee-logo-transformed.png";
         var img = new Image();
         img.onload = function () {
-            el.src = src;
+            document.getElementById(id).src = src;
         };
         img.src = src;
     }

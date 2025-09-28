@@ -41,6 +41,10 @@
     // Set up the audio element when the page loads
     window.addEventListener("load", () => {
       audioPlayer = document.getElementById("audioPlayer");
+      if(!audioPlayer){
+        return;
+      }
+      document.querySelector('#player-ui').classList.remove('d-none');
       playPauseButton = document.querySelector("#player-controls button:nth-child(2)");
       volumeSlider = document.getElementById("volumeControl");
       audioPlayer.volume = savedVolume;
@@ -104,5 +108,5 @@
 
     window.addEventListener("beforeunload", () => {
       localStorage.setItem("mp3_currentIndex", currentIndex);
-      localStorage.setItem("mp3_volume", audioPlayer.volume);
+      localStorage.setItem("mp3_volume", audioPlayer?.volume);
     });
