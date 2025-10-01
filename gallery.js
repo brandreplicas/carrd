@@ -34,7 +34,7 @@
         lazyJs.type = "text/javascript";
         lazyJs.className = sel;
         lazyJs.src = src + "?v=" + Date.now();
-        lazyJs.onerror = function(){
+        lazyJs.onerror = function () {
             location.reload();
         };
         document.body.appendChild(lazyJs);
@@ -63,7 +63,7 @@
             let link = encodeURIComponent(src);
             let wa_link = wsl + link;
             let email = mail_to + msg + link;
-            let uuid = generateUUIDNoHyphens();
+            let uuid = new_uuid();
             let url = src;
             try {
                 let urls = JSON.parse(src);
@@ -81,7 +81,7 @@
                 '<div class="gallery-item" tabindex="0">',
                 '<img id="',
                 uuid,
-                '" class="gallery-image"/>',
+                '" class="gallery-image" src="fashluxee-logo-transformed.png"/>',
                 '<div class="foot">'
             ];
             if (group) {
@@ -91,7 +91,7 @@
                         uuid,
                         '\')" data-for="',
                         uuid,
-                        '" data-direction="',go_left,
+                        '" data-direction="', go_left,
                         '"><img alt="left" src="left.svg" width="30"/></a>'
                     ]
                 );
@@ -118,7 +118,7 @@
                         uuid,
                         '\')" data-for="',
                         uuid,
-                        '" data-direction="',go_right,
+                        '" data-direction="', go_right,
                         '"><img alt="right" src="right.svg" width="30"/></a>'
                     ]
                 );
@@ -175,22 +175,13 @@
         loadMore();
     }
 
-    function generateUUIDNoHyphens() {
+    function new_uuid() {
         let array = new Uint8Array(16);
-        if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
-            crypto.getRandomValues(array); // Use crypto if available
-        } else {
-            // Fallback for older browsers
-            for (let i = 0; i < 16; i++) {
-                array[i] = Math.floor(Math.random() * 256);
-            }
+        for (let i = 0; i < 16; i++) {
+            array[i] = Math.floor(Math.random() * 256);
         }
-
-        // Set UUID version (4) and variant bits
         array[6] = (array[6] & 0x0f) | 0x40;
         array[8] = (array[8] & 0x3f) | 0x80;
-
-        // Convert to hex string without hyphens
         return Array.from(array, b => b.toString(16).padStart(2, '0')).join('');
     }
 
@@ -233,13 +224,16 @@
         loadNewScript(catUrl);
     }
 
-    function lazy_img(src, id) {
-        document.getElementById(id).src = "fashluxee-logo-transformed.png";
+    function lazy_img(_src, _id) {
+        document.getElementById(_id).style.opacity = '0';
         var img = new Image();
         img.onload = function () {
-            document.getElementById(id).src = src;
+            setTimeout(() => {
+                document.getElementById(_id).src = _src;
+                document.getElementById(_id).style.opacity = '1';
+            });
         };
-        img.src = src;
+        img.src = _src;
     }
 
     const groups = {};
@@ -263,27 +257,27 @@
 
         group.show = newIndex;
         lazy_img(src, uuid);
-        if(go_left === direction){
+        if (go_left === direction) {
             toggle_img_arrows(uuid, go_right, true);
         }
-        if(go_right === direction){
+        if (go_right === direction) {
             toggle_img_arrows(uuid, go_left, true);
         }
-        if (newIndex === 0){
+        if (newIndex === 0) {
             toggle_img_arrows(uuid, go_left, false);
         }
-        if(newIndex === urls.length-1){
+        if (newIndex === urls.length - 1) {
             toggle_img_arrows(uuid, go_right, false);
         }
     }
 
-    function toggle_img_arrows(uuid, direction, to_show){
-        let arrow = document.querySelector('a[data-for="'+uuid+'"][data-direction="'+direction+'"]');
+    function toggle_img_arrows(uuid, direction, to_show) {
+        let arrow = document.querySelector('a[data-for="' + uuid + '"][data-direction="' + direction + '"]');
         let _class = 'd-none';
         arrow.classList.add(_class);
-        if(to_show)arrow.classList.remove(_class);
+        if (to_show) arrow.classList.remove(_class);
     }
-    
+
     function left_img(uuid) {
         update_img(uuid, go_left);
     }
