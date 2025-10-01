@@ -225,13 +225,13 @@
     }
 
     function lazy_img(_src, _id) {
-        document.getElementById(_id).style.opacity = '0';
+        document.getElementById(_id).style.opacity = '0.5';
         var img = new Image();
         img.onload = function () {
             setTimeout(() => {
                 document.getElementById(_id).src = _src;
                 document.getElementById(_id).style.opacity = '1';
-            });
+            },200);
         };
         img.src = _src;
     }
