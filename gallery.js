@@ -81,7 +81,7 @@
                 '<div class="gallery-item" tabindex="0">',
                 '<img id="',
                 uuid,
-                '" class="gallery-image" src="fashluxee-logo-transformed.png"/>',
+                '" class="gallery-image fade-out fade-img" src="fashluxee-logo-transformed.png"/>',
                 '<div class="foot">'
             ];
             if (group) {
@@ -225,13 +225,11 @@
     }
 
     function lazy_img(_src, _id) {
-        document.getElementById(_id).style.opacity = '0.5';
+        document.getElementById(_id).classList.add('fade-out');
         var img = new Image();
         img.onload = function () {
-            setTimeout(() => {
-                document.getElementById(_id).src = _src;
-                document.getElementById(_id).style.opacity = '1';
-            },200);
+            document.getElementById(_id).src = _src;
+            document.getElementById(_id).classList.remove('fade-out');
         };
         img.src = _src;
     }
