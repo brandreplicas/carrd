@@ -1,113 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link rel="canonical" href="https://fashluxee.com/gallery.html"/>
-		<title>Deep dive into our ready stock</title>
-		<meta
-			name="description"
-			content="Deep dive into our ready stock. One stop shop for your Superfinest and Supertop quality replica products - Gallery" />
-		<meta property="og:title" content="Deep dive into our ready stock" />
-		<meta
-			property="og:description"
-			content="Deep dive into our ready stock. One stop shop for your Superfinest and Supertop quality replica products - Gallery" />
-		<meta property="article:published_time" content="2012-01-23T06:17:17" />
-		<meta name="twitter:card" content="summary" />
-		<meta name="twitter:title" content="Deep dive into our ready stock" />
-		<meta
-			name="twitter:description"
-			content="Deep dive into our ready stock. One stop shop for your Superfinest and Supertop quality replica products - Gallery" />
-		<meta charset="UTF-8" />
-		<meta http-equiv="x-ua-compatible" content="ie=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="HandheldFriendly" content="true">
-		<link rel="apple-touch-icon" href="fashluxee-logo-white-bg-512x512.png">
-		<link rel="apple-touch-startup-image" href="fashluxee-logo-white-bg-512x512.png">
-		<link rel="manifest" href="manifest.json">
-		<meta name="mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-		<link rel="dns-prefetch" href="//s.w.org" />
-		<link rel="icon" href="favicon.ico" sizes="75x75" />
-		<meta property="article:author" content="Fashluxee" />
-		<meta property="og:type" content="website" />
-		<link rel="preconnect" href="https://luxury.pythonanywhere.com" crossorigin=""/>
-		<link rel="preconnect" href="https://i.postimg.cc" crossorigin=""/>
-		<link rel="preload" href="style.css?_=1.3.8" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-		<link rel="preload" href="player.css?_=0.0.2" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-	</head>
-	<body>
-		<input type="checkbox" id="toggle" /><label for="toggle" class="menu-icon"
-			><span></span><span></span><span></span
-		></label>
-		<nav class="sidebar">
-			<img style="margin: 0px auto" src="fashluxee-logo-transformed.png" alt="Fashluxee" width="200" />
-			<ul>
-				<li><a class="d-link" href="index.html">About</a></li>
-				<li><a class="d-link" href="gallery.html">Gallery</a></li>
-				<li><a class="d-link" href="contact.html">Contact</a></li>
-				<li><a class="d-link" href="privacy-policy.html">Privacy Policy</a></li>
-				<li><a class="d-link" href="terms-of-use.html">Terms Of Use</a></li>
-				<li>Follow Us</li>
-				<li><a class="d-link" href="https://linktr.ee/fashluxee">Link Tree</a></li>
-				<li><a class="d-link" href="https://in.pinterest.com/fashluxei/">Pinterest</a></li>
-				<li><a class="d-link" href="https://t.me/s/fashluxee">Telegram Channel</a></li>
-				<li><a class="d-link" href="https://www.tumblr.com/brandreplicas">Tumblr</a></li>
-			</ul>
-		</nav>
-		<main>
-			<div class="container">
-				<div class="profile">
-					<div class="profile-bio">
-						<img
-							fetchpriority="high"
-							style="margin: 0px auto"
-							src="fashluxee-logo-transformed.png"
-							alt="Fashluxee"
-							width="200"
-							height="157" />
-					</div>
-					<h1 class="profile-bio short">Deep dive into our ready stock</h1>
-					<h2>One stop shop for your Superfinest and Supertop quality replica products</h2>
-				</div>
-				<div class="profile">
-					<div class="profile-bio">Category <a id="cath" class="d-link" href="#!"></a></div>
-				</div>
-				<nav class="sidebar cat">
-					<img
-						fetchpriority="high"
-						style="margin: 0px auto"
-						src="fashluxee-logo-transformed.png"
-						alt="Fashluxee"
-						width="200"
-						height="157" />
-			
-				  <audio id="audioPlayer" loop=""></audio>
-				  <div id="player-ui" class="d-none">
-					<div id="player-controls">
-					  <button onclick="prevSong()">&#8592;</button>
-					  <button onclick="togglePlayPause()"></button>
-					  <button onclick="nextSong()">&#8594;</button>
-					</div>
-					<div>
-					  <input type="range" aria-label="Volume Control" id="volumeControl" min="0.1" max="1" step="0.01" value="0.5"/>
-					</div>
-				  </div>
-					<ul>
-						<li><label class="title-short">Category</label></li>
-					</ul>
-					<ul id="cat" style="height: 40vh; overflow: auto"></ul>
-				</nav>
-				<div style="margin-top: 15px" class="gallery"></div>
-				<div class="loader"></div>
-				<p id="load-note" class="text-center">
-					Please <a aria-label="click to refresh" href="">click here</a>, if you see this message for more than 2 seconds.
-				</p>
-				<p id="no-result" class="text-center d-none">Nothing found here. Please try different category.</p>
-				<p id="last-result" class="text-center d-none">That's all in here.</p>
-			</div>
-		</main>
-		<script defer="" type="text/javascript" src="gallery.js?_=1.2.3"></script>
-		<script defer="" type="text/javascript" src="player.js?_=0.0.2"></script>
-	</body>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="canonical" href="https://fashluxee.com/gallery.html" />
+    <title>Deep dive into our ready stock</title>
+    <meta name="description"
+        content="Deep dive into our ready stock. One stop shop for your Superfinest and Supertop quality replica products - Gallery" />
+    <meta property="og:title" content="Deep dive into our ready stock" />
+    <meta property="og:description"
+        content="Deep dive into our ready stock. One stop shop for your Superfinest and Supertop quality replica products - Gallery" />
+    <meta property="article:published_time" content="2012-01-23T06:17:17" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Deep dive into our ready stock" />
+    <meta name="twitter:description"
+        content="Deep dive into our ready stock. One stop shop for your Superfinest and Supertop quality replica products - Gallery" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="HandheldFriendly" content="true">
+    <link rel="apple-touch-icon" href="fashluxee-logo-white-bg-512x512.png">
+    <link rel="apple-touch-startup-image" href="fashluxee-logo-white-bg-512x512.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="dns-prefetch" href="//s.w.org" />
+    <link rel="icon" href="favicon.ico" sizes="75x75" />
+    <meta property="article:author" content="Fashluxee" />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://luxury.pythonanywhere.com" crossorigin="" />
+    <link rel="preconnect" href="https://i.postimg.cc" crossorigin="" />
+    <link rel="preload" href="style.css?_=1.3.9" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="preload" href="player.css?_=0.0.2" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+</head>
+
+<body>
+    <input type="checkbox" id="toggle" /><label for="toggle"
+        class="menu-icon"><span></span><span></span><span></span></label>
+    <nav class="sidebar">
+        <img style="margin: 0px auto" src="fashluxee-logo-transformed.png" alt="Fashluxee" width="200" />
+        <ul>
+            <li><a class="d-link" href="index.html">About</a></li>
+            <li><a class="d-link" href="gallery.html">Gallery</a></li>
+            <li><a class="d-link" href="contact.html">Contact</a></li>
+            <li><a class="d-link" href="privacy-policy.html">Privacy Policy</a></li>
+            <li><a class="d-link" href="terms-of-use.html">Terms Of Use</a></li>
+            <li>Follow Us</li>
+            <li><a class="d-link" href="https://linktr.ee/fashluxee">Link Tree</a></li>
+            <li><a class="d-link" href="https://in.pinterest.com/fashluxei/">Pinterest</a></li>
+            <li><a class="d-link" href="https://t.me/s/fashluxee">Telegram Channel</a></li>
+            <li><a class="d-link" href="https://www.tumblr.com/brandreplicas">Tumblr</a></li>
+        </ul>
+    </nav>
+    <main>
+        <div class="container">
+            <div class="profile">
+                <div class="profile-bio">
+                    <img fetchpriority="high" style="margin: 0px auto" src="fashluxee-logo-transformed.png"
+                        alt="Fashluxee" width="200" height="157" />
+                </div>
+                <h1 class="profile-bio short">Deep dive into our ready stock</h1>
+                <h2>One stop shop for your Superfinest and Supertop quality replica products</h2>
+            </div>
+            <div class="profile">
+                <div class="profile-bio">Category <a id="cath" class="d-link" href="#!"></a></div>
+            </div>
+            <nav class="sidebar cat">
+                <img fetchpriority="high" style="margin: 0px auto" src="fashluxee-logo-transformed.png" alt="Fashluxee"
+                    width="200" height="157" />
+
+                <audio id="audioPlayer" loop=""></audio>
+                <div id="player-ui" class="d-none">
+                    <div id="player-controls">
+                        <button onclick="prevSong()">&#8592;</button>
+                        <button onclick="togglePlayPause()"></button>
+                        <button onclick="nextSong()">&#8594;</button>
+                    </div>
+                    <div>
+                        <input type="range" aria-label="Volume Control" id="volumeControl" min="0.1" max="1" step="0.01"
+                            value="0.5" />
+                    </div>
+                </div>
+                <ul>
+                    <li><label class="title-short">Category</label></li>
+                </ul>
+                <ul id="cat" style="height: 40vh; overflow: auto"></ul>
+            </nav>
+            <div style="margin-top: 15px" class="gallery"></div>
+            <div class="loader"></div>
+            <p id="load-note" class="text-center">
+                Please <a aria-label="click to refresh" href="">click here</a>, if you see this message for more than 2
+                seconds.
+            </p>
+            <p id="no-result" class="text-center d-none">Nothing found here. Please try different category.</p>
+            <p id="last-result" class="text-center d-none">That's all in here.</p>
+        </div>
+    </main>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-content">
+            <span class="lightbox-close">&times;</span>
+            <div class="lightbox-image-container">
+                <img id="lightbox-image" class="lightbox-image" src="" alt="" />
+                <div class="lightbox-nav">
+                    <button class="lightbox-prev" onclick="lightboxPrev()">&#10094;</button>
+                    <button class="lightbox-next" onclick="lightboxNext()">&#10095;</button>
+                </div>
+                <div class="lightbox-counter">
+                    <span id="lightbox-counter">1 / 1</span>
+                </div>
+            </div>
+            <div class="lightbox-actions">
+                <a id="lightbox-download" class="lightbox-action" download target="_blank">
+                    <img src="download.svg" alt="Download" width="20" />
+                </a>
+                <a id="lightbox-whatsapp" class="lightbox-action" target="_blank">
+                    <img src="chat.svg" alt="WhatsApp" width="20" />
+                </a>
+                <a id="lightbox-email" class="lightbox-action" target="_blank">
+                    <img src="email.svg" alt="Email" width="20" />
+                </a>
+            </div>
+        </div>
+    </div>
+    <script defer="" type="text/javascript" src="gallery.js?_=1.2.4"></script>
+    <script defer="" type="text/javascript" src="player.js?_=0.0.2"></script>
+</body>
+
 </html>

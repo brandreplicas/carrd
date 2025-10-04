@@ -1,293 +1,735 @@
 "use strict";
 (function (window, document, undef) {
-    var msg = encodeURIComponent("Hi Fashluxee,\nI would like to talk about this item: \n\n ");
-    var phone = "919503021689";
-    var wsl = "https://api.whatsapp.com/send?phone=" + phone + "&text=" + msg;
-    var vdos = /(mp4|3gp|ogg|avi|mov|wmv|flv|webm|mkv)/;
-    var poto = /(png|jpg|jpeg|gif|webp|bmp|tiff|svg)/;
-    var mail_to = "mailto:brandreplicastore@gmail.com?subject=Catalog%20Product%20Enquiry&body=";
-    var listEl = null;
-    var lastEl = null;
-    var cat_item = null;
-    var noteEl = null;
-    var resEl = null;
-    var hadEl = null;
-    var datUrl = "https://luxury.pythonanywhere.com";
-    var catUrl = datUrl + "/category-list";
-    var medUrl = datUrl + "/media-list";
-    var pos = 0;
-    var moreLocked = false;
-    var cath = null;
-    var catbar = null;
-    var tgl = null;
-    let go_left = -1;
-    let go_right = 1;
+  var msg = encodeURIComponent(
+    "Hi Fashluxee,\nI would like to talk about this item: \n\n "
+  );
+  var phone = "919503021689";
+  var wsl = "https://api.whatsapp.com/send?phone=" + phone + "&text=" + msg;
+  var vdos = /(mp4|3gp|ogg|avi|mov|wmv|flv|webm|mkv)/;
+  var poto = /(png|jpg|jpeg|gif|webp|bmp|tiff|svg)/;
+  var mail_to =
+    "mailto:brandreplicastore@gmail.com?subject=Catalog%20Product%20Enquiry&body=";
+  var listEl = null;
+  var lastEl = null;
+  var cat_item = null;
+  var noteEl = null;
+  var resEl = null;
+  var hadEl = null;
+  var datUrl = "https://luxury.pythonanywhere.com";
+  var catUrl = datUrl + "/category-list";
+  var medUrl = datUrl + "/media-list";
+  var pos = 0;
+  var moreLocked = false;
+  var cath = null;
+  var catbar = null;
+  var tgl = null;
+  let go_left = -1;
+  let go_right = 1;
 
-    function loadNewScript(src) {
-        var sel = "lazy-js";
-        var lazyJs = document.querySelector("." + sel);
-        if (lazyJs && lazyJs.parentNode) {
-            var pe = lazyJs.parentNode;
-            pe.removeChild(lazyJs);
-        }
-        lazyJs = document.createElement("script");
-        lazyJs.type = "text/javascript";
-        lazyJs.className = sel;
-        lazyJs.src = src + "?v=" + Date.now();
-        lazyJs.onerror = function () {
-            location.reload();
-        };
-        document.body.appendChild(lazyJs);
+  const lightboxState = {
+    currentIndex: 0,
+    currentGroup: null,
+    currentUuid: null,
+    images: [],
+  };
+
+  const autoSlideConfig = {
+    enabled: true,
+    interval: 3000,
+    pauseOnHover: true,
+  };
+
+  const autoSlideIntervals = new Map();
+  const slideStates = new Map();
+  const groups = {};
+
+  window.openLightbox = function (uuid, imageIndex = 0) {
+    console.log(
+      "openLightbox called with uuid:",
+      uuid,
+      "imageIndex:",
+      imageIndex
+    );
+    const group = groups[uuid];
+    if (!group) {
+      const imgElement = document.getElementById(uuid);
+      if (!imgElement) {
+        console.log("Image element not found:", uuid);
+        return;
+      }
+
+      lightboxState.images = [imgElement.src];
+      lightboxState.currentIndex = 0;
+      lightboxState.currentGroup = null;
+      lightboxState.currentUuid = uuid;
+    } else {
+      lightboxState.images = group.urls;
+      lightboxState.currentIndex = imageIndex;
+      lightboxState.currentGroup = group;
+      lightboxState.currentUuid = uuid;
     }
 
-    var push_medias = function (data) {
-        moreLocked = false;
-        console.log("medias", data);
-        if (!data.length) {
-            noteEl.classList.add("d-none");
-            lastEl.classList.add("d-none");
-            if (!pos) {
-                resEl.classList.remove("d-none");
-            } else {
-                hadEl.classList.remove("d-none");
-            }
-            return;
-        }
-        pos += data.length;
-        data.forEach((src) => {
-            var media = "";
-            if (!poto.test(src)) {
-                return;
-            }
-            let file = src.split("/").pop();
-            let link = encodeURIComponent(src);
-            let wa_link = wsl + link;
-            let email = mail_to + msg + link;
-            let uuid = new_uuid();
-            let url = src;
-            try {
-                let urls = JSON.parse(src);
-                src = urls;
-            } catch (e) {
-                src = url;
-            }
-            let group = Array.isArray(src) && src.length > 1;
-            if (group) {
-                let show = 0;
-                put_group(src, uuid, show);
-                src = src[show];
-            }
-            let html = [
-                '<div class="gallery-item" tabindex="0">',
-                '<img id="',
-                uuid,
-                '" class="gallery-image fade-out fade-img" src="fashluxee-logo-transformed.png"/>',
-                '<div class="foot">'
-            ];
-            if (group) {
-                html.push(
-                    ...[
-                        '<a aria-label="go left" class="icon left d-none" href="#!" onclick="left_img(\'',
-                        uuid,
-                        '\')" data-for="',
-                        uuid,
-                        '" data-direction="', go_left,
-                        '"><img alt="left" src="left.svg" width="30"/></a>'
-                    ]
-                );
-            }
-            html.push(
-                ...[
-                    '<a aria-label="chat" class="icon chat" target="_blank" href="',
-                    wa_link,
-                    '"><img alt="chat" src="chat.svg" width="30"/></a>',
-                    '<a aria-label="email" class="icon email" target="_blank" href="',
-                    email,
-                    '"><img alt="email" src="email.svg" width="30"/></a>',
-                    '<a aria-label="download" class="icon eye" target="_blank" download="',
-                    file,
-                    '" href="',
-                    src,
-                    '"><img alt="download" src="download.svg" width="30"/></a>'
-                ]
-            );
-            if (group) {
-                html.push(
-                    ...[
-                        '<a aria-label="go right" class="icon right" href="#!" onclick="right_img(\'',
-                        uuid,
-                        '\')" data-for="',
-                        uuid,
-                        '" data-direction="', go_right,
-                        '"><img alt="right" src="right.svg" width="30"/></a>'
-                    ]
-                );
-            }
-            html.push(...["</div>", "</div>"]);
-            listEl.innerHTML += html.join("");
-            lazy_img(src, uuid);
-        });
-        scroller();
+    showLightbox();
+  };
+
+  function showLightbox() {
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = document.getElementById("lightbox-image");
+    const lightboxCounter = document.getElementById("lightbox-counter");
+    const lightboxDownload = document.getElementById("lightbox-download");
+    const lightboxWhatsapp = document.getElementById("lightbox-whatsapp");
+    const lightboxEmail = document.getElementById("lightbox-email");
+
+    if (lightboxState.images.length === 0) {
+      console.log("No images to show in lightbox");
+      return;
+    }
+
+    console.log("Showing lightbox with", lightboxState.images.length, "images");
+
+    lightboxImage.style.opacity = "0";
+
+    const currentImage = lightboxState.images[lightboxState.currentIndex];
+    const img = new Image();
+
+    img.onload = function () {
+      lightboxImage.src = currentImage;
+      lightboxImage.alt = `Product image ${lightboxState.currentIndex + 1}`;
+      lightboxImage.style.opacity = "1";
+
+      lightboxCounter.textContent = `${lightboxState.currentIndex + 1} / ${
+        lightboxState.images.length
+      }`;
+
+      const fileName = currentImage.split("/").pop();
+      lightboxDownload.href = currentImage;
+      lightboxDownload.download = fileName;
+
+      const encodedImage = encodeURIComponent(currentImage);
+      lightboxWhatsapp.href = wsl + encodedImage;
+      lightboxEmail.href = mail_to + msg + encodedImage;
     };
 
-    var push_categories = function (data) {
-        console.log("categories", data);
-        let catEl = document.querySelector("#cat");
-        var first = null;
-        data.forEach((item) => {
-            var list = document.createElement("li");
-            catEl.appendChild(list);
-            var a = document.createElement("a");
-            list.appendChild(a);
-            a.className = "d-link";
-            a.href = "#";
-            a.textContent = item.text;
-            a.ariaLabel = item.text;
-            a.onclick = function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                on_category_changed(item);
-                return false;
-            };
-            if (!first) {
-                first = a;
-            }
-        });
-        first.click();
+    img.onerror = function () {
+      console.log("Failed to load lightbox image:", currentImage);
+      lightboxImage.src = "fashluxee-logo-transformed.png";
+      lightboxImage.style.opacity = "1";
     };
 
-    function outViewport(el) {
-        var rect = el.getBoundingClientRect();
-        return rect.bottom < 0 || rect.right < 0 || rect.left > window.innerWidth || rect.top > window.innerHeight;
+    img.src = currentImage;
+
+    lightbox.classList.add("show");
+    document.body.style.overflow = "hidden";
+
+    document.addEventListener("keydown", handleLightboxKeydown);
+  }
+
+  window.closeLightbox = function () {
+    const lightbox = document.getElementById("lightbox");
+    lightbox.classList.remove("show");
+    document.body.style.overflow = "";
+    document.removeEventListener("keydown", handleLightboxKeydown);
+  };
+
+  window.lightboxNext = function () {
+    if (lightboxState.images.length <= 1) return;
+
+    lightboxState.currentIndex =
+      (lightboxState.currentIndex + 1) % lightboxState.images.length;
+    showLightbox();
+  };
+
+  window.lightboxPrev = function () {
+    if (lightboxState.images.length <= 1) return;
+
+    lightboxState.currentIndex =
+      lightboxState.currentIndex === 0
+        ? lightboxState.images.length - 1
+        : lightboxState.currentIndex - 1;
+    showLightbox();
+  };
+
+  function handleLightboxKeydown(e) {
+    switch (e.key) {
+      case "Escape":
+        closeLightbox();
+        break;
+      case "ArrowLeft":
+        lightboxPrev();
+        break;
+      case "ArrowRight":
+        lightboxNext();
+        break;
+    }
+  }
+
+  function initLightbox() {
+    const lightbox = document.getElementById("lightbox");
+    const lightboxClose = document.querySelector(".lightbox-close");
+
+    if (lightboxClose) {
+      lightboxClose.addEventListener("click", closeLightbox);
     }
 
-    function loadMore() {
-        if (moreLocked || !cath || !cat_item) {
-            return;
+    if (lightbox) {
+      lightbox.addEventListener("click", function (e) {
+        if (e.target === lightbox) {
+          closeLightbox();
         }
-        moreLocked = true;
-        var cat_id = cat_item.value;
-        loadNewScript([medUrl, "?pos=", pos, "&cat_id=", cat_id, "&ts=", Date.now()].join(""));
+      });
     }
 
-    function scroller() {
-        if (lastEl && outViewport(lastEl)) return;
-        loadMore();
+    console.log("Lightbox initialized");
+  }
+
+  function loadNewScript(src) {
+    var sel = "lazy-js";
+    var lazyJs = document.querySelector("." + sel);
+    if (lazyJs && lazyJs.parentNode) {
+      var pe = lazyJs.parentNode;
+      pe.removeChild(lazyJs);
+    }
+    lazyJs = document.createElement("script");
+    lazyJs.type = "text/javascript";
+    lazyJs.className = sel;
+    lazyJs.src = src + "?v=" + Date.now();
+    lazyJs.onerror = function () {
+      showToast("Failed to load content. Please try again.", "error");
+      setTimeout(() => location.reload(), 2000);
+    };
+    document.body.appendChild(lazyJs);
+  }
+
+  window.push_medias = function (data) {
+    moreLocked = false;
+    console.log("medias", data);
+
+    if (!data.length) {
+      noteEl.classList.add("d-none");
+      lastEl.classList.add("d-none");
+      if (!pos) {
+        resEl.classList.remove("d-none");
+        showToast("No items found in this category", "warning");
+      } else {
+        hadEl.classList.remove("d-none");
+      }
+      return;
     }
 
-    function new_uuid() {
-        let array = new Uint8Array(16);
-        for (let i = 0; i < 16; i++) {
-            array[i] = Math.floor(Math.random() * 256);
+    pos += data.length;
+    let loadedCount = 0;
+
+    data.forEach((src, index) => {
+      if (!poto.test(src)) {
+        return;
+      }
+
+      let file = src.split("/").pop();
+      let link = encodeURIComponent(src);
+      let wa_link = wsl + link;
+      let email = mail_to + msg + link;
+      let uuid = new_uuid();
+      let url = src;
+
+      let parsedSrc;
+      let group = false;
+      let urls = [];
+
+      try {
+        parsedSrc = JSON.parse(src);
+        if (Array.isArray(parsedSrc) && parsedSrc.length > 1) {
+          group = true;
+          urls = parsedSrc;
+          src = parsedSrc[0];
+        } else {
+          parsedSrc = src;
         }
-        array[6] = (array[6] & 0x0f) | 0x40;
-        array[8] = (array[8] & 0x3f) | 0x80;
-        return Array.from(array, b => b.toString(16).padStart(2, '0')).join('');
-    }
+      } catch (e) {
+        parsedSrc = src;
+      }
 
-    function on_category_changed(item) {
-        cat_item = item;
-        pos = 0;
-        cath.textContent = cat_item.text;
-        listEl.innerHTML = "";
-        catbar.classList.remove("left-0");
-        noteEl.classList.remove("d-none");
-        lastEl.classList.remove("d-none");
-        resEl.classList.add("d-none");
-        hadEl.classList.add("d-none");
-        loadMore();
-    }
+      if (group) {
+        put_group(urls, uuid, 0);
+      }
 
-    function tgl_sidebar(show) {
-        tgl.checked = show;
-    }
+      let html = [
+        '<div class="gallery-item" tabindex="0" data-uuid="' + uuid + '"',
+        group ? ' data-has-group="true"' : "",
+        ">",
+        '<div class="gallery-image-container">',
+        '<div class="auto-slide-container">',
+        '<img id="',
+        uuid,
+        '" class="gallery-image" src="fashluxee-logo-transformed.png" loading="lazy" alt="Product image" style="cursor: zoom-in;"/>',
+      ];
 
-    function page_init() {
-        listEl = document.querySelector(".gallery");
-        lastEl = document.querySelector(".loader");
-        noteEl = document.querySelector("#load-note");
-        resEl = document.querySelector("#no-result");
-        hadEl = document.querySelector("#last-result");
-        cath = document.querySelector("#cath");
-        catbar = document.querySelector(".sidebar.cat");
-        tgl = document.querySelector("#toggle");
-        cath.addEventListener("click", (e) => {
-            e.preventDefault();
-            let open = "left-0";
-            if (catbar.classList.contains(open)) {
-                catbar.classList.remove(open);
-            } else {
-                catbar.classList.add(open);
-            }
-            return false;
+      if (group && urls.length > 1) {
+        html.push(
+          "</div>",
+          '<div class="slider-nav">',
+          '<div class="slider-arrow left-arrow" onclick="left_img(\'' +
+            uuid +
+            "')\">",
+          '<img alt="left" src="left.svg" width="16"/>',
+          "</div>",
+          '<div class="slider-arrow right-arrow" onclick="right_img(\'' +
+            uuid +
+            "')\">",
+          '<img alt="right" src="right.svg" width="16"/>',
+          "</div>",
+          "</div>",
+          '<div class="slider-pagination" id="pagination-' + uuid + '">'
+        );
+
+        for (let i = 0; i < urls.length; i++) {
+          html.push(
+            '<div class="bullet' + (i === 0 ? " active" : "") + '" ',
+            "onclick=\"goToSlide('" + uuid + "', " + i + ')" ',
+            'data-slide="' + i + '"></div>'
+          );
+        }
+
+        html.push("</div>");
+      } else {
+        html.push("</div>");
+      }
+
+      html.push(
+        "</div>",
+        '<div class="gallery-item-info">',
+        '<div class="item-actions">',
+        '<a aria-label="chat on whatsapp" class="icon chat" target="_blank" href="' +
+          wa_link +
+          '" title="Chat on WhatsApp">',
+        '<img alt="chat" src="chat.svg" width="20"/>',
+        "</a>",
+        '<a aria-label="send email" class="icon email" target="_blank" href="' +
+          email +
+          '" title="Send Email">',
+        '<img alt="email" src="email.svg" width="20"/>',
+        "</a>",
+        '<a aria-label="download image" class="icon eye" target="_blank" download="' +
+          file +
+          '" href="' +
+          src +
+          '" title="Download Image">',
+        '<img alt="download" src="download.svg" width="20"/>',
+        "</a>",
+        "</div>",
+        "</div>",
+        "</div>"
+      );
+
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = html.join("");
+      const newItem = tempDiv.firstChild;
+      newItem.style.opacity = "0";
+      newItem.style.transform = "translateY(20px)";
+
+      listEl.appendChild(newItem);
+
+      const imgElement = document.getElementById(uuid);
+      if (imgElement) {
+        imgElement.addEventListener("click", function () {
+          console.log("Image clicked, opening lightbox for:", uuid);
+          openLightbox(uuid);
         });
-        loadNewScript(catUrl);
+      }
+
+      if (group && urls.length > 1) {
+        setTimeout(() => {
+          initAutoSlide(uuid, urls.length);
+        }, 500 + index * 100);
+      }
+
+      setTimeout(() => {
+        newItem.style.transition = "all 0.5s ease";
+        newItem.style.opacity = "1";
+        newItem.style.transform = "translateY(0)";
+      }, index * 100);
+
+      lazy_img(src, uuid, () => {
+        loadedCount++;
+      });
+    });
+
+    scroller();
+  };
+
+  window.push_categories = function (data) {
+    console.log("categories", data);
+    let catEl = document.querySelector("#cat");
+    var first = null;
+
+    data.forEach((item, index) => {
+      var list = document.createElement("li");
+      catEl.appendChild(list);
+      var a = document.createElement("a");
+      list.appendChild(a);
+      a.className = "d-link";
+      a.href = "#";
+      a.textContent = item.text;
+      a.ariaLabel = item.text;
+      a.style.animationDelay = index * 100 + "ms";
+      a.style.opacity = "0";
+      a.style.transform = "translateX(-20px)";
+
+      a.onclick = function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        autoSlideIntervals.forEach((interval, uuid) => {
+          clearInterval(interval);
+        });
+        autoSlideIntervals.clear();
+        slideStates.clear();
+
+        on_category_changed(item);
+        return false;
+      };
+
+      if (!first) {
+        first = a;
+      }
+
+      setTimeout(() => {
+        a.style.transition = "all 0.3s ease";
+        a.style.opacity = "1";
+        a.style.transform = "translateX(0)";
+      }, index * 100);
+    });
+
+    if (first) {
+      setTimeout(() => first.click(), 500);
+    }
+  };
+
+  function outViewport(el) {
+    var rect = el.getBoundingClientRect();
+    return (
+      rect.bottom < 0 ||
+      rect.right < 0 ||
+      rect.left > window.innerWidth ||
+      rect.top > window.innerHeight
+    );
+  }
+
+  function loadMore() {
+    if (moreLocked || !cath || !cat_item) {
+      return;
+    }
+    moreLocked = true;
+    var cat_id = cat_item.value;
+
+    loadNewScript(
+      [medUrl, "?pos=", pos, "&cat_id=", cat_id, "&ts=", Date.now()].join("")
+    );
+  }
+
+  function scroller() {
+    if (lastEl && outViewport(lastEl)) return;
+    loadMore();
+  }
+
+  function new_uuid() {
+    let array = new Uint8Array(16);
+    for (let i = 0; i < 16; i++) {
+      array[i] = Math.floor(Math.random() * 256);
+    }
+    array[6] = (array[6] & 0x0f) | 0x40;
+    array[8] = (array[8] & 0x3f) | 0x80;
+    return Array.from(array, (b) => b.toString(16).padStart(2, "0")).join("");
+  }
+
+  function on_category_changed(item) {
+    autoSlideIntervals.forEach((interval, uuid) => {
+      clearInterval(interval);
+    });
+    autoSlideIntervals.clear();
+    slideStates.clear();
+
+    cat_item = item;
+    pos = 0;
+    cath.textContent = cat_item.text;
+    cath.style.background = `linear-gradient(135deg, ${getRandomColor()}, ${getRandomColor()})`;
+
+    listEl.classList.add("loading");
+    listEl.innerHTML = "";
+
+    setTimeout(() => {
+      listEl.classList.remove("loading");
+    }, 1000);
+
+    catbar.classList.remove("left-0");
+    noteEl.classList.remove("d-none");
+    lastEl.classList.remove("d-none");
+    resEl.classList.add("d-none");
+    hadEl.classList.add("d-none");
+    loadMore();
+  }
+
+  function getRandomColor() {
+    const colors = ["#8b4513", "#d2691e", "#a0522d", "#cd853f", "#deb887"];
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
+
+  function page_init() {
+    listEl = document.querySelector(".gallery");
+    lastEl = document.querySelector(".loader");
+    noteEl = document.querySelector("#load-note");
+    resEl = document.querySelector("#no-result");
+    hadEl = document.querySelector("#last-result");
+    cath = document.querySelector("#cath");
+    catbar = document.querySelector(".sidebar.cat");
+    tgl = document.querySelector("#toggle");
+
+    initLightbox();
+
+    const loadNoteLink = noteEl.querySelector("a");
+    if (loadNoteLink) {
+      loadNoteLink.addEventListener("click", function (e) {
+        e.preventDefault();
+        loadMore();
+      });
     }
 
-    function lazy_img(_src, _id) {
-        document.getElementById(_id).classList.add('fade-out');
-        var img = new Image();
-        img.onload = function () {
-            document.getElementById(_id).src = _src;
-            document.getElementById(_id).classList.remove('fade-out');
-        };
-        img.src = _src;
+    cath.addEventListener("click", (e) => {
+      e.preventDefault();
+      let open = "left-0";
+      if (catbar.classList.contains(open)) {
+        catbar.classList.remove(open);
+      } else {
+        catbar.classList.add(open);
+      }
+      return false;
+    });
+
+    loadNewScript(catUrl);
+  }
+
+  function lazy_img(_src, _id, onLoad) {
+    const imgElement = document.getElementById(_id);
+    if (!imgElement) {
+      console.log(`Image element not found: ${_id}`);
+      if (onLoad) onLoad();
+      return;
     }
 
-    const groups = {};
+    imgElement.classList.add("fade-out");
 
-    function put_group(urls, uuid, show) {
-        groups[uuid] = { urls, show };
+    var img = new Image();
+    img.onload = function () {
+      imgElement.src = _src;
+      setTimeout(() => {
+        imgElement.classList.remove("fade-out");
+      }, 50);
+      if (onLoad) onLoad();
+    };
+
+    img.onerror = function () {
+      console.log(`Failed to load image: ${_src}`);
+      imgElement.src = "fashluxee-logo-transformed.png";
+      setTimeout(() => {
+        imgElement.classList.remove("fade-out");
+      }, 50);
+      if (onLoad) onLoad();
+    };
+
+    img.src = _src;
+  }
+
+  function put_group(urls, uuid, show) {
+    groups[uuid] = {
+      urls: urls,
+      show: show,
+    };
+    console.log(`Stored group for ${uuid} with ${urls.length} images`);
+  }
+
+  window.left_img = function (uuid) {
+    update_img(uuid, go_left);
+  };
+
+  window.right_img = function (uuid) {
+    update_img(uuid, go_right);
+  };
+
+  window.goToSlide = function (uuid, slideIndex) {
+    const group = groups[uuid];
+    const state = slideStates.get(uuid);
+
+    if (!group || !state) {
+      console.log(`No group or state found for ${uuid}`);
+      return;
     }
 
-    function update_img(uuid, direction) {
-        const group = groups[uuid];
-        if (!group) return;
+    if (slideIndex < 0 || slideIndex >= state.totalSlides) {
+      console.log(`Invalid slide index: ${slideIndex}`);
+      return;
+    }
 
-        const { urls } = group;
-        let { show } = group;
+    const currentIndex = state.currentSlide;
+    if (currentIndex === slideIndex) {
+      console.log(`Already on slide ${slideIndex}`);
+      return;
+    }
 
-        const newIndex = show + direction;
-        if (newIndex < 0 || newIndex >= urls.length) return;
+    console.log(`Navigating from slide ${currentIndex} to ${slideIndex}`);
 
-        const src = urls[newIndex];
-        if (!src) return;
+    state.currentSlide = slideIndex;
+    group.show = slideIndex;
 
-        group.show = newIndex;
-        lazy_img(src, uuid);
-        if (go_left === direction) {
-            toggle_img_arrows(uuid, go_right, true);
+    const src = group.urls[slideIndex];
+    if (!src) {
+      console.log(`No source found for slide ${slideIndex}`);
+      return;
+    }
+
+    lazy_img(src, uuid);
+
+    updatePagination(uuid, slideIndex);
+  };
+
+  function update_img(uuid, direction) {
+    const state = slideStates.get(uuid);
+    if (!state) {
+      console.log(`No state found for ${uuid}`);
+      return;
+    }
+
+    const group = groups[uuid];
+    if (!group) {
+      console.log(`No group found for ${uuid}`);
+      return;
+    }
+
+    let newIndex = state.currentSlide + direction;
+
+    if (newIndex < 0) {
+      newIndex = group.urls.length - 1;
+    } else if (newIndex >= group.urls.length) {
+      newIndex = 0;
+    }
+
+    console.log(
+      `Manual navigation: Moving from ${state.currentSlide} to ${newIndex}`
+    );
+    goToSlide(uuid, newIndex);
+  }
+
+  function initAutoSlide(uuid, totalSlides) {
+    if (!autoSlideConfig.enabled || totalSlides <= 1) return;
+
+    const item = document.querySelector(`[data-uuid="${uuid}"]`);
+    if (!item) return;
+
+    console.log(
+      `Initializing auto-slide for ${uuid} with ${totalSlides} slides`
+    );
+
+    slideStates.set(uuid, {
+      currentSlide: 0,
+      totalSlides: totalSlides,
+      isPaused: false,
+    });
+
+    startAutoSlide(uuid);
+
+    item.addEventListener("mouseenter", () => handleHover(uuid, true));
+    item.addEventListener("mouseleave", () => handleHover(uuid, false));
+    item.addEventListener("touchstart", () => handleHover(uuid, true));
+    item.addEventListener("touchend", () => handleHover(uuid, false));
+  }
+
+  function handleHover(uuid, isEnter) {
+    const state = slideStates.get(uuid);
+    if (!state) return;
+
+    if (isEnter) {
+      state.isPaused = true;
+      clearAutoSlide(uuid);
+    } else {
+      state.isPaused = false;
+      startAutoSlide(uuid);
+    }
+  }
+
+  function startAutoSlide(uuid) {
+    const state = slideStates.get(uuid);
+    if (!state || state.isPaused) return;
+
+    clearAutoSlide(uuid);
+
+    const intervalId = setInterval(() => {
+      const currentState = slideStates.get(uuid);
+      if (!currentState || currentState.isPaused) return;
+
+      let nextSlide = currentState.currentSlide + 1;
+
+      if (nextSlide >= currentState.totalSlides) {
+        nextSlide = 0;
+      }
+
+      console.log(
+        `Auto-slide: Moving from ${currentState.currentSlide} to ${nextSlide}`
+      );
+      goToSlide(uuid, nextSlide);
+    }, autoSlideConfig.interval);
+
+    autoSlideIntervals.set(uuid, intervalId);
+  }
+
+  function clearAutoSlide(uuid) {
+    const intervalId = autoSlideIntervals.get(uuid);
+    if (intervalId) {
+      clearInterval(intervalId);
+      autoSlideIntervals.delete(uuid);
+    }
+  }
+
+  function updatePagination(uuid, activeIndex) {
+    const pagination = document.getElementById(`pagination-${uuid}`);
+    if (!pagination) {
+      console.log(`No pagination found for ${uuid}`);
+      return;
+    }
+
+    const bullets = pagination.querySelectorAll(".bullet");
+    bullets.forEach((bullet, index) => {
+      if (index === activeIndex) {
+        bullet.classList.add("active");
+      } else {
+        bullet.classList.remove("active");
+      }
+    });
+  }
+
+  function showToast(message, type = "info", duration = 4000) {
+    const toastContainer =
+      document.querySelector(".toast-container") || createToastContainer();
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+
+    toastContainer.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.animation = "slideOut 0.5s ease forwards";
+      setTimeout(() => {
+        if (toast.parentNode) {
+          toast.parentNode.removeChild(toast);
         }
-        if (go_right === direction) {
-            toggle_img_arrows(uuid, go_left, true);
-        }
-        if (newIndex === 0) {
-            toggle_img_arrows(uuid, go_left, false);
-        }
-        if (newIndex === urls.length - 1) {
-            toggle_img_arrows(uuid, go_right, false);
-        }
-    }
+      }, 500);
+    }, duration);
+  }
 
-    function toggle_img_arrows(uuid, direction, to_show) {
-        let arrow = document.querySelector('a[data-for="' + uuid + '"][data-direction="' + direction + '"]');
-        let _class = 'd-none';
-        arrow.classList.add(_class);
-        if (to_show) arrow.classList.remove(_class);
-    }
+  function createToastContainer() {
+    const container = document.createElement("div");
+    container.className = "toast-container";
+    document.body.appendChild(container);
+    return container;
+  }
 
-    function left_img(uuid) {
-        update_img(uuid, go_left);
-    }
-
-    function right_img(uuid) {
-        update_img(uuid, go_right);
-    }
-
-    window.push_medias = push_medias;
-    window.push_categories = push_categories;
-    window.left_img = left_img;
-    window.right_img = right_img;
-    document.addEventListener("scroll", scroller, false);
-    document.addEventListener("DOMContentLoaded", page_init, false);
+  document.addEventListener("scroll", scroller, false);
+  document.addEventListener("DOMContentLoaded", page_init, false);
 })(window, document);
