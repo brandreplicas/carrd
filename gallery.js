@@ -5,7 +5,6 @@
   );
   var phone = "919503021689";
   var wsl = "https://api.whatsapp.com/send?phone=" + phone + "&text=" + msg;
-  var vdos = /(mp4|3gp|ogg|avi|mov|wmv|flv|webm|mkv)/;
   var poto = /(png|jpg|jpeg|gif|webp|bmp|tiff|svg)/;
   var mail_to =
     "mailto:brandreplicastore@gmail.com?subject=Catalog%20Product%20Enquiry&body=";
@@ -20,9 +19,6 @@
   var medUrl = datUrl + "/media-list";
   var pos = 0;
   var moreLocked = false;
-  var cath = null;
-  var catbar = null;
-  var tgl = null;
   let go_left = -1;
   let go_right = 1;
 
@@ -360,20 +356,15 @@
     console.log("categories", data);
     let catEl = document.querySelector("#cat");
     var first = null;
-
+    var cls = 'px-4 py-2 text-sm tracking-wider transition-colors bg-primary text-primary-foreground';
     data.forEach((item, index) => {
-      var list = document.createElement("li");
-      catEl.appendChild(list);
-      var a = document.createElement("a");
-      list.appendChild(a);
-      a.className = "d-link";
-      a.href = "#";
+      if(-1 === 'All,Bags,Caps,Hats,Footwears,Watches,Belts,Eyewears,'.indexOf(item.text)) return true;
+      var a = document.createElement("button");
+      catEl.appendChild(a);
+      a.className = cls;
+      cls = "px-4 py-2 text-sm tracking-wider transition-colors bg-secondary text-foreground hover:bg-accent hover:text-accent-foreground";
       a.textContent = item.text;
       a.ariaLabel = item.text;
-      a.style.animationDelay = index * 100 + "ms";
-      a.style.opacity = "0";
-      a.style.transform = "translateX(-20px)";
-
       a.onclick = function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -415,7 +406,7 @@
   }
 
   function loadMore() {
-    if (moreLocked || !cath || !cat_item) {
+    if (moreLocked || !cat_item) {
       return;
     }
     moreLocked = true;
@@ -450,8 +441,6 @@
 
     cat_item = item;
     pos = 0;
-    cath.textContent = cat_item.text;
-    cath.style.background = `linear-gradient(135deg, ${getRandomColor()}, ${getRandomColor()})`;
 
     listEl.classList.add("loading");
     listEl.innerHTML = "";
@@ -460,7 +449,6 @@
       listEl.classList.remove("loading");
     }, 1000);
 
-    catbar.classList.remove("left-0");
     noteEl.classList.remove("d-none");
     lastEl.classList.remove("d-none");
     resEl.classList.add("d-none");
@@ -479,9 +467,6 @@
     noteEl = document.querySelector("#load-note");
     resEl = document.querySelector("#no-result");
     hadEl = document.querySelector("#last-result");
-    cath = document.querySelector("#cath");
-    catbar = document.querySelector(".sidebar.cat");
-    tgl = document.querySelector("#toggle");
 
     initLightbox();
 
@@ -492,17 +477,6 @@
         loadMore();
       });
     }
-
-    cath.addEventListener("click", (e) => {
-      e.preventDefault();
-      let open = "left-0";
-      if (catbar.classList.contains(open)) {
-        catbar.classList.remove(open);
-      } else {
-        catbar.classList.add(open);
-      }
-      return false;
-    });
 
     loadNewScript(catUrl);
   }
