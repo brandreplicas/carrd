@@ -29,6 +29,11 @@
     images: [],
   };
 
+  let currentZoom = 1;
+  const ZOOM_STEP = 0.2;
+  const MAX_ZOOM = 3;
+  const MIN_ZOOM = 0.5;
+
   const autoSlideConfig = {
     enabled: true,
     interval: 3000,
@@ -58,11 +63,13 @@
       lightboxState.currentIndex = 0;
       lightboxState.currentGroup = null;
       lightboxState.currentUuid = uuid;
+      currentZoom = 1;
     } else {
       lightboxState.images = group.urls;
       lightboxState.currentIndex = imageIndex;
       lightboxState.currentGroup = group;
       lightboxState.currentUuid = uuid;
+      currentZoom = 1;
     }
 
     showLightbox();
@@ -114,6 +121,8 @@
 
     img.src = currentImage;
 
+    lightboxImage.style.transform = `scale(${currentZoom})`;
+
     lightbox.classList.add("show");
     document.body.style.overflow = "hidden";
 
@@ -132,6 +141,7 @@
 
     lightboxState.currentIndex =
       (lightboxState.currentIndex + 1) % lightboxState.images.length;
+    currentZoom = 1;
     showLightbox();
   };
 
@@ -142,8 +152,30 @@
       lightboxState.currentIndex === 0
         ? lightboxState.images.length - 1
         : lightboxState.currentIndex - 1;
+    currentZoom = 1;
     showLightbox();
   };
+
+  window.lightboxZoomIn = function () {
+    if (currentZoom < MAX_ZOOM) {
+      currentZoom += ZOOM_STEP;
+      updateZoom();
+    }
+  };
+
+  window.lightboxZoomOut = function () {
+    if (currentZoom > MIN_ZOOM) {
+      currentZoom -= ZOOM_STEP;
+      updateZoom();
+    }
+  };
+
+  function updateZoom() {
+    const lightboxImage = document.getElementById("lightbox-image");
+    if (lightboxImage) {
+      lightboxImage.style.transform = `scale(${currentZoom})`;
+    }
+  }
 
   function handleLightboxKeydown(e) {
     switch (e.key) {
@@ -356,13 +388,21 @@
     console.log("categories", data);
     let catEl = document.querySelector("#cat");
     var first = null;
-    var cls = 'px-4 py-2 text-sm tracking-wider transition-colors bg-primary text-primary-foreground';
+    var cls =
+      "px-4 py-2 text-sm tracking-wider transition-colors bg-primary text-primary-foreground";
     data.forEach((item, index) => {
-      if(-1 === 'All,Bags,Caps,Hats,Footwears,Watches,Belts,Eyewears,'.indexOf(item.text)) return true;
+      if (
+        -1 ===
+        "All,Bags,Caps,Hats,Footwears,Watches,Belts,Eyewears,".indexOf(
+          item.text
+        )
+      )
+        return true;
       var a = document.createElement("button");
       catEl.appendChild(a);
       a.className = cls;
-      cls = "px-4 py-2 text-sm tracking-wider transition-colors bg-secondary text-foreground hover:bg-accent hover:text-accent-foreground";
+      cls =
+        "px-4 py-2 text-sm tracking-wider transition-colors bg-secondary text-foreground hover:bg-accent hover:text-accent-foreground";
       a.textContent = item.text;
       a.ariaLabel = item.text;
       a.onclick = function (e) {
@@ -552,6 +592,7 @@
 
     state.currentSlide = slideIndex;
     group.show = slideIndex;
+    currentZoom = 1;
 
     const src = group.urls[slideIndex];
     if (!src) {
@@ -562,6 +603,10 @@
     lazy_img(src, uuid);
 
     updatePagination(uuid, slideIndex);
+
+    // Reset auto-slide timer on manual navigation
+    clearAutoSlide(uuid);
+    // startAutoSlide(uuid);
   };
 
   function update_img(uuid, direction) {
@@ -607,7 +652,7 @@
       isPaused: false,
     });
 
-    startAutoSlide(uuid);
+    // startAutoSlide(uuid);
 
     item.addEventListener("mouseenter", () => handleHover(uuid, true));
     item.addEventListener("mouseleave", () => handleHover(uuid, false));
@@ -624,7 +669,7 @@
       clearAutoSlide(uuid);
     } else {
       state.isPaused = false;
-      startAutoSlide(uuid);
+      // startAutoSlide(uuid);
     }
   }
 
