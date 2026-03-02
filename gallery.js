@@ -3,7 +3,7 @@
   var msg = encodeURIComponent(
     "Hi Fashluxee,\nI would like to talk about this item: \n\n "
   );
-  var phone = "919503021689";
+  var phone = "919152521689";
   var wsl = "https://api.whatsapp.com/send?phone=" + phone + "&text=" + msg;
   var poto = /(png|jpg|jpeg|gif|webp|bmp|tiff|svg)/;
   var mail_to =
