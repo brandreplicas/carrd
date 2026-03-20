@@ -123,39 +123,107 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <link rel="stylesheet" href="https://fashluxee.com/style2.css">
   <meta name="google-site-verification" content="ONtS43ezWM3AvVXImGNypGwBbMtoDdgMS_Nlvt6PxMI" />
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Fashluxee",
-  "url": "https://fashluxee.com",
-  "logo": "https://fashluxee.com/fashluxee-logo-white-bg-512x512.png",
-  "description": "Fashluxee offers a premium collection of luxury replica watches in India, focusing on high-quality craftsmanship and iconic designs.",
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "+919503021689",
-    "contactType": "customer service",
-    "areaServed": "IN",
-    "availableLanguage": "en"
-  },
-  "sameAs": [
-    "https://www.facebook.com/fashluxee",
-    "https://www.instagram.com/fashluxee"
-  ]
-}
+	{
+		"@context": "https://schema.org",
+		"@type": "Organization",
+		"name": "Fashluxee",
+		"url": "https://fashluxee.com",
+		"logo": "https://fashluxee.com/fashluxee-logo-white-bg-512x512.png",
+		"description": "Fashluxee offers a premium collection of luxury replica watches in India, focusing on high-quality craftsmanship and iconic designs.",
+		"contactPoint": {
+			"@type": "ContactPoint",
+			"telephone": "+919503021689",
+			"contactType": "customer service",
+			"areaServed": "IN",
+			"availableLanguage": "en"
+		},
+		"sameAs": [
+			"https://www.facebook.com/fashluxee",
+			"https://www.instagram.com/fashluxee"
+		]
+	}
 </script>
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Fashluxee",
-  "url": "https://fashluxee.com",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://fashluxee.com/gallery.html?s={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
-}
+	{
+		"@context": "https://schema.org",
+		"@type": "WebSite",
+		"name": "Fashluxee",
+		"url": "https://fashluxee.com",
+		"potentialAction": {
+			"@type": "SearchAction",
+			"target": "https://fashluxee.com/gallery.html?s={search_term_string}",
+			"query-input": "required name=search_term_string"
+		}
+	}
 </script>
+<style>
+	@keyframes marquee {
+		0% {
+			transform: translateX(0%);
+		}
+
+		100% {
+			transform: translateX(-50%);
+		}
+	}
+
+	.animate-marquee {
+		animation: marquee 40s linear infinite;
+		display: flex;
+		width: max-content;
+	}
+
+	.animate-marquee:hover {
+		animation-play-state: paused;
+	}
+
+	.marquee-wrapper {
+		overflow: hidden;
+		position: relative;
+	}
+
+	.fade-left,
+	.fade-right {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 120px;
+		z-index: 10;
+		pointer-events: none;
+	}
+
+	.fade-left {
+		left: 0;
+		background: linear-gradient(to right, var(--bs-body-bg), transparent);
+	}
+
+	.fade-right {
+		right: 0;
+		background: linear-gradient(to left, var(--bs-body-bg), transparent);
+	}
+
+	.trust-card {
+		width: 260px;
+		flex-shrink: 0;
+		padding: 12px;
+		background: rgba(0, 0, 0, 0.03);
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		border-radius: 4px;
+		transition: 0.4s;
+	}
+
+	.trust-card:hover {
+		border-color: #c8a97e;
+	}
+
+	.trust-card img {
+		width: 100%;
+		aspect-ratio: 9/16;
+		object-fit: cover;
+		border-radius: 4px;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+	}
+</style>
 </head>
 
 <body>
@@ -610,7 +678,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
   </script>
   <link rel="preload" href="https://fashluxee.com/style.css?_=0.0.2" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-<script defer="" type="text/javascript" src="https://fashluxee.com/gallery.js?_=1.2.6"></script>
+<script defer="" type="text/javascript" src="https://fashluxee.com/gallery.js?_=1.2.8"></script>
 </body>
 
 </html>
